@@ -1,12 +1,13 @@
-from cryptography.fernet import Fernet
-from pathlib import Path
+# -*- coding: utf-8 -*-
 import glob
+from pathlib import Path
 
+from cryptography.fernet import Fernet
+from PyInquirer import prompt
 from PyInquirer import style_from_dict
 from PyInquirer import Token
-from PyInquirer import prompt
-from PyInquirer import Validator
 from PyInquirer import ValidationError
+from PyInquirer import Validator
 
 
 class FolderValidator(Validator):
@@ -17,7 +18,9 @@ class FolderValidator(Validator):
         f = Path(document.text)
         if not f.is_dir():
             raise ValidationError(
-                message="Please enter a valid folder path.", cursor_position=len(document.text))
+                message="Please enter a valid folder path.",
+                cursor_position=len(document.text),
+            )
 
 
 class FileValidator(Validator):
@@ -30,7 +33,9 @@ class FileValidator(Validator):
             return
         elif not f.is_file():
             raise ValidationError(
-                message="Please enter a valid key file path.", cursor_position=len(document.text))
+                message="Please enter a valid key file path.",
+                cursor_position=len(document.text),
+            )
 
 
 def generate_key(save_filename="key.txt"):
@@ -121,15 +126,17 @@ def main():
     # Set a custom style of the UI.
     # This is just settings visual color parameters
     # using html color codes.
-    style = style_from_dict({
-        Token.Separator: '#cc5454',
-        Token.QuestionMark: '#673ab7 bold',
-        Token.Selected: '#cc5454',
-        Token.Pointer: '#673ab7 bold',
-        Token.Instruction: '',
-        Token.Answer: '#ff6600 bold',
-        Token.Question: '',
-    })
+    style = style_from_dict(
+        {
+            Token.Separator: "#cc5454",
+            Token.QuestionMark: "#673ab7 bold",
+            Token.Selected: "#cc5454",
+            Token.Pointer: "#673ab7 bold",
+            Token.Instruction: "",
+            Token.Answer: "#ff6600 bold",
+            Token.Question: "",
+        }
+    )
 
     # File extensions to use as options to the user.
     file_exts = [".txt", ".pdf", ".docx", ".png"]
@@ -139,10 +146,7 @@ def main():
     file_exts[0]["checked"] = True
 
     # dict translating answers to functions.
-    operations = {
-        "Encrypt": encrypt,
-        "Decrypt": decrypt
-    }
+    operations = {"Encrypt": encrypt, "Decrypt": decrypt}
 
     # Create and format the questions.
     questions = [
@@ -150,25 +154,25 @@ def main():
             "type": "input",
             "name": "key_filename",
             "message": "Enter key filename (Blank to generate a new one):",
-            "validate": FileValidator
+            "validate": FileValidator,
         },
         {
             "type": "input",
             "name": "folder",
             "message": "Enter folder to encrypt/decrypt:",
-            "validate": FolderValidator
+            "validate": FolderValidator,
         },
         {
             "type": "list",
             "name": "operation",
             "message": "What do you want to do?",
-            "choices": ["Encrypt", "Decrypt"]
+            "choices": ["Encrypt", "Decrypt"],
         },
         {
             "type": "checkbox",
             "name": "file_ext",
             "message": "Which file's do you want to encrypt/decrypt?",
-            "choices": file_exts
+            "choices": file_exts,
         },
     ]
 
