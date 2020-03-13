@@ -1,4 +1,8 @@
-# Python-Template
+# File-Encryption
+
+A simple file encryption script written in Python.
+
+Disclaimer: This is kinda just a one off demo project, not really intended for actual use.
 
 ## Support
 
